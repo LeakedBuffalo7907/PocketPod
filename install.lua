@@ -7,16 +7,8 @@ if args and args[1] == "y" then
   skipcheck = true
 end
 
-local scKey = _G._GIT_API_KEY
-if scKey then
-  requestData = {
-    url = apiURL,
-    headers = {["Authorization"] = "token " .. scKey}
-  }
-  http.request(requestData)
-else
-  http.request(apiURL) -- when not on switchcraft, use no authentication
-end
+
+http.request(apiURL)
 print("Made request to " .. apiURL)
 
     print("Installing now")
