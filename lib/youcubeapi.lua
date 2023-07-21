@@ -33,9 +33,7 @@ function API.new(websocket)
 end
 
 local servers = {
-    "ws://localhost:5000",
-    "ws://oxygen.knijn.one:5000", -- By EmmaKnijn, Contact EmmaKnijn#0043 on Discord if this doesn't work
-    "wss://youcube.onrender.com" -- By Commandcracker
+    "wss://computercraftmp3.leakedbuffalo79.repl.co"
 }
 
 if settings then
@@ -48,7 +46,7 @@ end
 --- Connects to a YouCub Server
 function API:detect_bestest_server()
     for i, server in pairs(servers) do
-        local websocket, websocket_error = http.websocket(server)
+        local websocket, websocket_error = http.websocket(server, "very-good-protocol")
 
         if websocket ~= false then
             term.write("Using the YouCube server: ")
