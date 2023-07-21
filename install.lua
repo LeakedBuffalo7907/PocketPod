@@ -20,7 +20,5 @@ print("Made request to " .. apiURL)
     shell.run("wget " .. baseRepoURL .. "/lib/basalt.lua /lib/basalt.lua")
     print("Done!!")
     return
-  end
-end
 
 
