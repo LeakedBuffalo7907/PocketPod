@@ -46,7 +46,7 @@ end
 --- Connects to a YouCub Server
 function API:detect_bestest_server()
     for i, server in pairs(servers) do
-        local websocket, websocket_error = http.websocket(server, "very-good-protocol")
+        local websocket, websocket_error = http.websocket(server, { ["Sec-WebSocket-Protocol"] = "very-good-protocol" })
 
         if websocket ~= false then
             term.write("Using the YouCube server: ")
