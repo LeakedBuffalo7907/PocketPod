@@ -1,6 +1,6 @@
 -- data[1].assets[1].browser_download_url
-local apiURL = "http://api.github.com/repos/knijn/musicify/releases"
-local baseRepoURL = "https://raw.githubusercontent.com/knijn/musicify/main"
+local apiURL = "http://api.github.com/repos/LeakedBuffalo7907/PocketPod/releases"
+local baseRepoURL = "https://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
 local args = {...}
 local skipcheck = false
 if args and args[1] == "y" then
@@ -27,7 +27,7 @@ while true do
     print(handle.getResponseCode())
     local data = textutils.unserialiseJSON(handle.readAll())
     local url = data[1].assets[1].browser_download_url
-    print("Downloading Musicify from: " .. url .. ", is this okay? (n to cancel, anything else to continue)")
+    print("Downloading PocketPod from: " .. url .. ", is this okay? (n to cancel, anything else to continue)")
     local input = read()
     if not skipcheck and input == keys.n then
       error("Cancelled Installation")
