@@ -49,8 +49,8 @@ function API:detect_bestest_server()
         local websocket, websocket_error = http.websocket(server, { ["Sec-WebSocket-Protocol"] = "PocketPod" })
 
         if websocket ~= false then
-            term.write("Using the YouCube server: ")
-            term.setTextColor(colors.blue)
+            term.write("PocketPod Server - ")
+            term.setTextColor(colors.green)
             print(server)
             term.setTextColor(colors.white)
             self.websocket = websocket
@@ -68,7 +68,7 @@ function API:receive()
         self.websocket.receive
     )
     if not status then
-        print("Lost connection to server -> Reconnection ...")
+        print("Lost Connection -> Reconnecting ...")
         self:detect_bestest_server()
         return self:receive()
     end
@@ -83,7 +83,7 @@ function API:send(data)
         textutils.serialiseJSON(data)
     )
     if not status then
-        print("Lost connection to server -> Reconnection ...")
+        print("Lost Connection -> Reconnecting ...")
         self:detect_bestest_server()
         self:send(data)
     end
