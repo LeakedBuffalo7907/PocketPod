@@ -1,4 +1,4 @@
-# Musicify
+# Pocket Pod
 
 [![CC: Tweaked Version: 1.100+](https://img.shields.io/badge/CC:%20tweaked-1.100+-green?style=flat-square&logo=GNOME%20Terminal)](https://tweaked.cc/)
 
