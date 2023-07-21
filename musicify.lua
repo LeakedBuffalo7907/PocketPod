@@ -5,8 +5,8 @@ end
 
 settings.load()
 local repo = settings.get("PocketPod.repo","https://raw.githubusercontent.com/knijn/musicify-songs/main/index.json")
-local autoUpdates = settings.get("musicify.autoUpdates",true)
-local modemBroadcast = settings.get("musicify.broadcast", true)
+local autoUpdates = settings.get("PocketPod.autoUpdates",true)
+local modemBroadcast = settings.get("PocketPod.broadcast", true)
 local dfpwm = require("cc.audio.dfpwm")
 local indexURL = repo .. "?cb=" .. os.epoch("utc")
 local version = "2.5.0"
@@ -19,8 +19,9 @@ local v = require("/lib/semver")
 local YouCubeAPI = require("/lib/youcubeapi")
 
 if not speaker then -- Check if there is a speaker
-  error("Speaker not found, refer to the wiki on how to set up Musicify",0)
+  error("No Speaker",0)
 end
+
 
 local handle , msg = http.get(indexURL)
 if not handle then
