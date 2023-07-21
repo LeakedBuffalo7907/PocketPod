@@ -36,13 +36,6 @@ local servers = {
     "wss://computercraftmp3.leakedbuffalo79.repl.co:8080",
 }
 
-if settings then
-    local server = settings.get("youcube.server")
-    if server then
-        table.insert(servers, 1, server)
-    end
-end
-
 --- Connects to a YouCub Server
 function API:detect_bestest_server()
     for i, server in pairs(servers) do
