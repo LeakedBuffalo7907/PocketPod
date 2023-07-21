@@ -19,21 +19,8 @@ else
 end
 print("Made request to " .. apiURL)
 
-while true do
-  event, url, handle = os.pullEvent()
-  if event == "http_failure" then
-    error("Failed to download file: " .. handle)
-  elseif event == "http_success" then
-    print(handle.getResponseCode())
-    local data = textutils.unserialiseJSON(handle.readAll())
-    local url = data[1].assets[1].browser_download_url
-    print("Downloading PocketPod from: " .. url .. ", is this okay? (n to cancel, anything else to continue)")
-    local input = read()
-    if not skipcheck and input == keys.n then
-      error("Cancelled Installation")
-    end
     print("Installing now")
-    shell.run("wget " .. url)
+    shell.run("wget " .. baseRepoURL .. "/musicify.lua /musicify.lua")
 
     print("Downloading libraries right now")
     shell.run("wget " .. baseRepoURL .. "/lib/semver.lua /lib/semver.lua")
