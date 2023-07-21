@@ -33,7 +33,7 @@ function API.new(websocket)
 end
 
 local servers = {
-    "wss://computercraftmp3.leakedbuffalo79.repl.co",
+    "wss://computercraftmp3.leakedbuffalo79.repl.co:8080",
 }
 
 if settings then
