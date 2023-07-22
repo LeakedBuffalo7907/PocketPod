@@ -33,7 +33,7 @@ function API.new(websocket)
 end
 
 local servers = {
-    "wss://computercraftmp3.leakedbuffalo79.repl.co:8080",
+    "wss://computercraftmp3.leakedbuffalo79.repl.co",
 }
 
 --- Connects to a YouCub Server
