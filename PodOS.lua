@@ -23,7 +23,7 @@ local function clearPage()
   local w, h = term.getSize()
 
   
-  for i in h do
+  for i,v in h do
   term.setCursorPos(1, tonumber(i))
   term.clearLine()
   end
