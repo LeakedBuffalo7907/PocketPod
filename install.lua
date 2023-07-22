@@ -1,5 +1,3 @@
--- data[1].assets[1].browser_download_url
-local apiURL = "http://api.github.com/repos/LeakedBuffalo7907/PocketPod/releases"
 local baseRepoURL = "https://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
 local args = {...}
 local skipcheck = false
