@@ -22,6 +22,7 @@ end
 
 local function drawEntries()
   local w, h = term.getSize()
+  term.clearLine()
     term.setCursorPos((w - #"PodOS") / 2, 2)
     term.setTextColor(16384)
     term.write("PodOS")
