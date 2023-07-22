@@ -66,10 +66,11 @@ while true do
   end
 end
 
-pod.start = function ()
+pod.bootup = function ()
   drawEntries()
   getSongsList()
 end
+
 pod.play = function (arguments)
     if not arguments or not arguments[1] then
       print("No Song Provided")
