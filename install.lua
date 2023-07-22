@@ -3,9 +3,9 @@ local apiURL = "http://api.github.com/repos/LeakedBuffalo7907/PocketPod/releases
 local baseRepoURL = "https://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
 local args = {...}
 local skipcheck = false
-local currentVersion = "0.018"
+local currentVersion = "0.0181"
 
-local function updateFile(name, path)
+local function updateFile(path, name)
   fs.delete(path .. name)
   shell.run("wget " .. baseRepoURL .. path .. name .. " " .. path .. name)
 end
