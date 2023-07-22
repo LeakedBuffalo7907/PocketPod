@@ -20,7 +20,7 @@ if not speaker then -- Check if there is a speaker
   error("No Speaker",0)
 end
 
-local function drawEntries(selection, entries)
+local function drawEntries()
   local w, h = term.getSize()
     term.setCursorPos((w - #"PodOS") / 2, 2)
     term.setTextColor(16384)
@@ -39,7 +39,7 @@ while true do
   if key == keys.up and selection > 1 then
     selection = selection - 1
     drawEntries(selection, entries)
-  elseif key == keys.down and selection < #entries then
+  elseif key == keys.down and selection < 3 then
     selection = selection + 1
     drawEntries(selection, entries)
   elseif key == keys.enter then
