@@ -3,7 +3,7 @@ local apiURL = "http://api.github.com/repos/LeakedBuffalo7907/PocketPod/releases
 local baseRepoURL = "https://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
 local args = {...}
 local skipcheck = false
-local currentVersion = "0.014"
+local currentVersion = "0.015"
 if args and args[1] == "y" then
   skipcheck = true
 end
@@ -15,7 +15,7 @@ local updated = false
     if fs.exists("/CurrentVersion.txt") then
       local h = fs.open("/CurrentVersion.txt", "r")
       if string.find(h.readAll(), currentVersion) then 
-        print("Pocket Pod Up To Date")
+        print("Pocket Pod Up To Date " .. currentVersion)
         return 
       end
     end

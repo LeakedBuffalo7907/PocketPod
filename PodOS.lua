@@ -22,7 +22,8 @@ end
 
 pod.play = function (arguments)
     if not arguments or not arguments[1] then
-        error("No URL was provided")
+      print("No Song Provided")
+      return
     end
     local url = arguments[1]
 
@@ -30,24 +31,15 @@ pod.play = function (arguments)
     local audiodevice = YouCubeAPI.Speaker.new(speaker)
 
     audiodevice:validate()
-    print("about to connect")
     youcubeapi:detect_bestest_server()
-    print("server found")
     
     local function run(_url, no_close)
-      print("Requesting media ...")
-      local data = youcubeapi:request_media(_url)
-
-      if data.action == "error" then
-          error(data.message)
-      end
 
       local chunkindex = 0
 
       while true do
-        local chunk = youcubeapi:get_chunk(chunkindex, data.id)
+        local chunk = youcubeapi:get_chunk(chunkindex, _url)
           if chunk == "mister, the media has finished playing" then
-            print()
             if data.playlist_videos then
                 return data.playlist_videos
             end
