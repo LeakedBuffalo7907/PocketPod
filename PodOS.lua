@@ -19,20 +19,10 @@ local YouCubeAPI = require("/lib/youcubeapi")
 if not speaker then -- Check if there is a speaker
   error("No Speaker",0)
 end
-local function clearPage()
-  local w, h = term.getSize()
-
-  
-  for i,v in h do
-  term.setCursorPos(1, tonumber(i))
-  term.clearLine()
-  end
-
-end
 
 local function drawEntries()
   local w, h = term.getSize()
-    clearPage()
+    term.clear()
     term.setCursorPos((w - #"PodOS") / 2, 2)
     term.setTextColor(16384)
     term.write("PodOS")

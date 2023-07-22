@@ -1,5 +1,5 @@
 local baseRepoURL = "https://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
-local currentVersion = "0.021"
+local currentVersion = "0.022"
 
 local function updateFile(path, name)
   fs.delete(path .. name)
