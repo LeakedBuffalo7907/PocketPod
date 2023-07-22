@@ -30,6 +30,7 @@ local function getSongsList()
   end
 
 end
+local booted = false;
 local function drawEntries()
   local w, h = term.getSize()
     term.clear()
@@ -48,7 +49,7 @@ local function drawEntries()
 end
 
 local selection = 1
-while true do
+while booted do
   local event, key = os.pullEvent("key")
   if key or event then 
     drawEntries();
@@ -69,6 +70,7 @@ end
 pod.bootup = function ()
   drawEntries()
   getSongsList()
+  booted = true;
 end
 
 pod.play = function (arguments)
