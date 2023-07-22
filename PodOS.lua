@@ -20,6 +20,38 @@ if not speaker then -- Check if there is a speaker
   error("No Speaker",0)
 end
 
+local function drawEntries(selection, entries)
+  local w, h = term.getSize()
+  for line = 1, #entries do
+    term.setCursorPos((w - #"PodOS") / 2, 2)
+    term.setTextColor(16384)
+    term.write("PodOS")
+    term.setCursorPos(5, h - 3)
+    term.write("test line 1")
+    term.setCursorPos(5, h - 2)
+    term.write("test line 2")
+    term.setCursorPos(5, h - 1)
+    term.write("test line 3")
+  end
+end
+local selection = 1
+while true do
+  local event, key = os.pullEvent("key")
+  if key == keys.up and selection > 1 then
+    selection = selection - 1
+    drawEntries(selection, entries)
+  elseif key == keys.down and selection < #entries then
+    selection = selection + 1
+    drawEntries(selection, entries)
+  elseif key == keys.enter then
+    if selection == 1 then 
+      -- button 1
+    end
+  end
+end
+pod.start = function ()
+  drawEntries()
+end
 pod.play = function (arguments)
     if not arguments or not arguments[1] then
       print("No Song Provided")
