@@ -36,9 +36,9 @@ local function drawEntries()
     term.setCursorPos((w - #"PodOS") / 2, 2)
     term.setTextColor(16384)
     term.write("PodOS")
-    for i = 1, SongsList do
+    --for i = 1, SongsList do
 
-    end
+   -- end
     term.setCursorPos(5, h - 3)
     term.write("test line 1")
     term.setCursorPos(5, h - 2)
