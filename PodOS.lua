@@ -3,28 +3,44 @@ if periphemu then -- probably on CraftOS-PC
     config.set("standardsMode",true)
 end
 
-settings.load()
-local autoUpdates = settings.get("PocketPod.autoUpdates",true)
-local modemBroadcast = settings.get("PocketPod.broadcast", true)
 local dfpwm = require("cc.audio.dfpwm")
 local version = "2.5.0"
 local args = {...}
 local pod = {}
 local speaker = peripheral.find("speaker")
-local serverChannel = 2561
-local modem = peripheral.find("modem")
 local v = require("/lib/semver")
+local SongsList = {}
 local YouCubeAPI = require("/lib/youcubeapi")
+local webserver_URL = "https://computercraftmp3.leakedbuffalo79.repl.co"
 
 if not speaker then -- Check if there is a speaker
   error("No Speaker",0)
 end
+local function getSongsList() {
+  local SongsFile, msg = http.get(webserver_URL .. "/songs")
+  if not SongsFile then
+    error(msg)
+  end
+
+  SongsList = textutils.unserialiseJSON(SongsFile.readAll())
+  SongsFile.close()
+  
+  if not SongsList then
+      error("json data malformed",0)
+  end
+
+
+
+}
 local function drawEntries()
   local w, h = term.getSize()
     term.clear()
     term.setCursorPos((w - #"PodOS") / 2, 2)
     term.setTextColor(16384)
     term.write("PodOS")
+    for i = 1, SongsList do
+
+    end
     term.setCursorPos(5, h - 3)
     term.write("test line 1")
     term.setCursorPos(5, h - 2)
@@ -36,7 +52,7 @@ end
 local selection = 1
 while true do
   local event, key = os.pullEvent("key")
-  if key and event then 
+  if key or event then 
     drawEntries();
   end
   if key == keys.up and selection > 1 then
@@ -54,6 +70,7 @@ end
 
 pod.start = function ()
   drawEntries()
+  getSongsList()
 end
 pod.play = function (arguments)
     if not arguments or not arguments[1] then
@@ -74,7 +91,7 @@ pod.play = function (arguments)
 
       while true do
         local chunk = youcubeapi:get_chunk(chunkindex, _url)
-          if chunk == "mister, the media has finished playing" then
+          if chunk == "done" then
             if data.playlist_videos then
                 return data.playlist_videos
             end

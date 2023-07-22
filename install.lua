@@ -1,9 +1,14 @@
-local baseRepoURL = "https://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
-local currentVersion = "0.024"
+local baseRepoURL = "http://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
+local currentVersion = "0.025"
 
 local function updateFile(path, name)
   fs.delete(path .. name)
-  shell.run("wget " .. baseRepoURL .. path .. name .. " " .. path .. name)
+  local newFile = http.get(baseRepoURL .. path .. name ..)
+  local F = fs.open(path .. name, "w")
+  F.write(newFile.readAll())
+  newFile.close()
+  F.close()
+  print(name .. " Downloaded")
 end
 
 local updated = false
