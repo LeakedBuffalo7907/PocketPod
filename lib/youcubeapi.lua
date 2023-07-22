@@ -39,7 +39,9 @@ local servers = {
 --- Connects to a YouCub Server
 function API:detect_bestest_server()
     for i, server in pairs(servers) do
+        print("the code is running")
         local websocket, websocket_error = http.websocket(server, { ["Sec-WebSocket-Protocol"] = "PocketPod" })
+        print("it ran")
 
         if websocket ~= false then
             term.write("PocketPod Server - ")

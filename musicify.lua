@@ -130,7 +130,9 @@ musicify.youcube = function (arguments)
     local audiodevice = YouCubeAPI.Speaker.new(speaker)
 
     audiodevice:validate()
+    print("about to connect")
     youcubeapi:detect_bestest_server()
+    print("server found")
     
     local function run(_url, no_close)
       print("Requesting media ...")
