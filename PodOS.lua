@@ -22,9 +22,9 @@ end
 local function clearPage()
   local w, h = term.getSize()
 
-  local i = 0
+  
   for i in h do
-  term.setCursorPos(1, i)
+  term.setCursorPos(1, tonumber(i))
   term.clearLine()
   end
 
