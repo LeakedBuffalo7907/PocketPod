@@ -40,7 +40,7 @@ local servers = {
 function API:detect_bestest_server()
     for i, server in pairs(servers) do
         print("the code is running")
-        local websocket, websocket_error = http.websocket(server, { ["Sec-WebSocket-Protocol"] = "PocketPod" })
+        local websocket, websocket_error = http.websocket(server, { ["Sec-WebSocket-Protocol"] = "pocketpod" })
         print("it ran")
 
         if websocket ~= false then
