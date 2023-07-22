@@ -3,7 +3,7 @@ local currentVersion = "0.025"
 
 local function updateFile(path, name)
   fs.delete(path .. name)
-  local newFile = http.get(baseRepoURL .. path .. name ..)
+  local newFile = http.get(baseRepoURL .. path .. name)
   local F = fs.open(path .. name, "w")
   F.write(newFile.readAll())
   newFile.close()
