@@ -4,6 +4,10 @@
 
 Pocket Pod is a fork of musicify designed to pull music from a replit webserver
 
+## Webserver
+My webserver is open source so have at it and host your own
+https://replit.com/@LeakedBuffalo79/ComputerCraftMP3
+
 ## Install
 
 To install, run
