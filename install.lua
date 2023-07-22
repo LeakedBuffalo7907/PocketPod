@@ -12,8 +12,16 @@ http.request(apiURL)
 print("Made request to " .. apiURL)
 local updated = false
   if fs.exists("/musicify.lua") then
+    if fs.exists("/CurrentVersion.txt") then
+      local h = fs.open("/CurrentVersion.txt", "r")
+      if string.find(h.readAll(), currentVersion) then 
+        print("Pocket Pod Up To Date")
+        return 
+      end
+    end
     updated = true
     print("Pocket Pod Already Exists, Deleting old install")
+    fs.delete("/CurrentVersion.txt")
     fs.delete("/musicify.lua")
     fs.delete("/lib/semver.lua")
     fs.delete("/lib/youcubeapi.lua")
@@ -27,13 +35,14 @@ local updated = false
     shell.run("wget " .. baseRepoURL .. "/lib/semver.lua /lib/semver.lua")
     shell.run("wget " .. baseRepoURL .. "/lib/youcubeapi.lua /lib/youcubeapi.lua")
     shell.run("wget " .. baseRepoURL .. "/lib/basalt.lua /lib/basalt.lua")
+    shell.run("wget " .. baseRepoURL .. "/CurrentVersion.txt /CurrentVersion.txt")
     if updated then
-      settings.load()
       print("Pocket Pod has Updated " .. currentVersion)
 
     else 
       print("Pocket Pod Installed " .. currentVersion)
     end
+
     return
     
 
