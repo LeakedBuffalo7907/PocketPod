@@ -4,9 +4,6 @@ local baseRepoURL = "https://raw.githubusercontent.com/LeakedBuffalo7907/PocketP
 local args = {...}
 local skipcheck = false
 local currentVersion = "0.0171"
-if args and args[1] == "y" then
-  skipcheck = true
-end
 
 local function updateFile(name, path)
   fs.delete(path .. name)
