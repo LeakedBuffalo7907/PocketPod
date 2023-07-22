@@ -22,7 +22,6 @@ end
 
 local function drawEntries(selection, entries)
   local w, h = term.getSize()
-  for line = 1, #entries do
     term.setCursorPos((w - #"PodOS") / 2, 2)
     term.setTextColor(16384)
     term.write("PodOS")
@@ -32,8 +31,8 @@ local function drawEntries(selection, entries)
     term.write("test line 2")
     term.setCursorPos(5, h - 1)
     term.write("test line 3")
-  end
 end
+
 local selection = 1
 while true do
   local event, key = os.pullEvent("key")
@@ -49,6 +48,7 @@ while true do
     end
   end
 end
+
 pod.start = function ()
   drawEntries()
 end
