@@ -1,5 +1,5 @@
 local baseRepoURL = "http://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
-local currentVersion = "0.0251"
+local currentVersion = "0.0261"
 
 local function updateFile(path, name)
   fs.delete(path .. name)
@@ -7,6 +7,12 @@ local function updateFile(path, name)
   local F = fs.open(path .. name, "w")
   F.write(newFile.readAll())
   newFile.close()
+  F.close()
+  print(name .. " Updated")
+end
+local function downloadFile(path, name)
+  local F = fs.open(path .. name, "w")
+  F.write(http.get(baseRepoURL .. path .. name).readAll())
   F.close()
   print(name .. " Downloaded")
 end
@@ -34,11 +40,11 @@ local updated = false
 
   else
     print("Installing now")
-    shell.run("wget " .. baseRepoURL .. "/PodOS.lua /PodOS.lua")
-    shell.run("wget " .. baseRepoURL .. "/lib/semver.lua /lib/semver.lua")
-    shell.run("wget " .. baseRepoURL .. "/lib/youcubeapi.lua /lib/youcubeapi.lua")
-    shell.run("wget " .. baseRepoURL .. "/lib/basalt.lua /lib/basalt.lua")
-    shell.run("wget " .. baseRepoURL .. "/CurrentVersion.txt /CurrentVersion.txt")
+    downloadFile("/", "CurrentVersion.txt")
+    downloadFile("/", "PodOS.lua")
+    downloadFile("/lib/", "semver.lua")
+    downloadFile("/lib/", "youcubeapi.lua")
+    downloadFile("/lib/", "basalt.lua")
     print("Pocket Pod Installed " .. currentVersion)
 
   end

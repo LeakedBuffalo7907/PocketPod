@@ -16,7 +16,7 @@ local webserver_URL = "https://computercraftmp3.leakedbuffalo79.repl.co"
 if not speaker then -- Check if there is a speaker
   error("No Speaker",0)
 end
-local function getSongsList() {
+local function getSongsList() 
   local SongsFile, msg = http.get(webserver_URL .. "/songs")
   if not SongsFile then
     error(msg)
@@ -29,9 +29,7 @@ local function getSongsList() {
       error("json data malformed",0)
   end
 
-
-
-}
+end
 local function drawEntries()
   local w, h = term.getSize()
     term.clear()
