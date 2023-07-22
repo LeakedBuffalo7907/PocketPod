@@ -1,6 +1,4 @@
 local baseRepoURL = "https://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
-local args = {...}
-local skipcheck = false
 local currentVersion = "0.020"
 
 local function updateFile(path, name)
