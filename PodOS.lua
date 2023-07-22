@@ -19,10 +19,11 @@ local YouCubeAPI = require("/lib/youcubeapi")
 if not speaker then -- Check if there is a speaker
   error("No Speaker",0)
 end
-
+local drawn = false;
 local function drawEntries()
   local w, h = term.getSize()
     term.clear()
+    drawn = false;
     term.setCursorPos((w - #"PodOS") / 2, 2)
     term.setTextColor(16384)
     term.write("PodOS")
@@ -32,10 +33,13 @@ local function drawEntries()
     term.write("test line 2")
     term.setCursorPos(5, h - 1)
     term.write("test line 3")
+    drawn = true;
+
+    
 end
 
 local selection = 1
-while true do
+while drawn do
   local event, key = os.pullEvent("key")
   if key == keys.up and selection > 1 then
     selection = selection - 1
