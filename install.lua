@@ -3,7 +3,7 @@ local apiURL = "http://api.github.com/repos/LeakedBuffalo7907/PocketPod/releases
 local baseRepoURL = "https://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
 local args = {...}
 local skipcheck = false
-local currentVersion = "0.0181"
+local currentVersion = "0.019"
 
 local function updateFile(path, name)
   fs.delete(path .. name)
