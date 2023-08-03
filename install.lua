@@ -18,10 +18,11 @@ end
     local h = fs.open("/CurrentVersion.txt", "r")
     local webversion = http.get(baseRepoURL .. "/CurrentVersion.txt")
     currentVersion = webversion.readAll()
-    uptodate = string.find(h.readAll(), currentVersion)
+    uptodate = h.readAll() == currentVersion
     h.close()
     webversion.close()
   end
+  print("debug" .. uptodate)
 
   if uptodate then
     print("Pocket Pod Up To Date " .. currentVersion)
