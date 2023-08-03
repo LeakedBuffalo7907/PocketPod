@@ -12,15 +12,14 @@ local function downloadFile(path, name)
 end
 
   local uptodate = false
-  local currentVersion = "0.00"
+  local webversion = http.get(baseRepoURL .. "/CurrentVersion.txt")
+  local currentVersion = webversion.readAll()
+  webversion.close()
   local oldUser = fs.exists("/CurrentVersion.txt")
   if oldUser then
     local h = fs.open("/CurrentVersion.txt", "r")
-    local webversion = http.get(baseRepoURL .. "/CurrentVersion.txt")
-    currentVersion = webversion.readAll()
     uptodate = h.readAll() == currentVersion
     h.close()
-    webversion.close()
   end
   print("debug")
 
