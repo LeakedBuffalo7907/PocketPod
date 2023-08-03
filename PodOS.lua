@@ -9,7 +9,7 @@ local pod = {}
 local speaker = peripheral.find("speaker")
 local GlobalSongsList = {}
 local speakerlib = require("/lib/speakerlib")
-local webserver_URL = "https://computercraftmp3.leakedbuffalo79.repl.co"
+local webserver_URL = "https://pocketpod.leakedbuffalo79.repl.co"
 
 if not speaker then -- Check if there is a speaker
   error("No Speaker",0)
@@ -23,9 +23,10 @@ local function getSongsList()
 
   GlobalSongsList = textutils.unserialiseJSON(SongsFile.readAll())
   SongsFile.close()
+  print(GlobalSongsList)
   
   if not GlobalSongsList then
-      error("json data malformed",0)
+    error("json data malformed",0)
   end
 
 end
