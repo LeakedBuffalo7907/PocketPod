@@ -21,7 +21,6 @@ end
     uptodate = h.readAll() == currentVersion
     h.close()
   end
-  print("debug")
 
   if uptodate then
     print("Pocket Pod Up To Date " .. currentVersion)
