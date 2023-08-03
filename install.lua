@@ -22,7 +22,7 @@ end
     h.close()
     webversion.close()
   end
-  print("debug" .. uptodate)
+  print("debug")
 
   if uptodate then
     print("Pocket Pod Up To Date " .. currentVersion)
