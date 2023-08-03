@@ -18,16 +18,6 @@ end
   local currentVersion = webversion.readAll()
   webversion.close()
   local oldUser = fs.exists("/CurrentVersion.txt")
-  if oldUser then
-    local h = fs.open("/CurrentVersion.txt", "r")
-    uptodate = h.readAll() == currentVersion
-    h.close()
-  end
-
-  if uptodate then
-    print("Pocket Pod Up To Date " .. currentVersion)
-    return
-  end
 
   if oldUser then
     print("Detected old install, Updating now")
