@@ -4,6 +4,7 @@ local baseRepoURL = "http://raw.githubusercontent.com/LeakedBuffalo7907/PocketPo
 local function downloadFile(path, name)
   if fs.exists(path .. name) then
     fs.delete(path .. name)
+  end
   local F = fs.open(path .. name, "w")
   F.write(http.get(baseRepoURL .. path .. name).readAll())
   F.close()
