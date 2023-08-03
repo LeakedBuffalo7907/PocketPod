@@ -31,7 +31,7 @@ local function getSongsList()
 end
 
 pod.play = function (arguments)
-    
+  speakerlib.playDfpwmMono(arguments)
 end
 
 
