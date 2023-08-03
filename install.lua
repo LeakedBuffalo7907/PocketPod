@@ -35,9 +35,7 @@ end
   end
   downloadFile("/", "CurrentVersion.txt")
   downloadFile("/", "PodOS.lua")
-  downloadFile("/lib/", "semver.lua")
-  downloadFile("/lib/", "youcubeapi.lua")
-  downloadFile("/lib/", "basalt.lua")
+  downloadFile("/lib/", "speakerlib.lua")
   print("Pocket Pod Installed " .. currentVersion)
   return;
     
