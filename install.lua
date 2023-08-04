@@ -2,14 +2,16 @@ local baseRepoURL = "http://raw.githubusercontent.com/LeakedBuffalo7907/PocketPo
 
 
 local function downloadFile(path, name)
+  local status = "Downloaded"
   if fs.exists(path .. name) then
     fs.delete(path .. name)
+    status = "Updated"
   end
   local F = fs.open(path .. name, "w")
   F.write(http.get(baseRepoURL .. path .. name).readAll())
   F.close()
   term.setTextColor(colors.lime)
-  print(name .. " Downloaded")
+  print(name .. " " .. status)
   term.setTextColor(colors.white)
 end
 
@@ -20,12 +22,13 @@ end
   local oldUser = fs.exists("/CurrentVersion.txt")
 
   if oldUser then
-    print("Detected old install, Updating now")
+    print("Old install detected, Reinstalling Now")
   else
     print("Installing now")
   end
   downloadFile("/", "CurrentVersion.txt")
   downloadFile("/", "PodOS.lua")
+  downloadFile("/", "startup.lua")
   downloadFile("/lib/", "speakerlib.lua")
   downloadFile("/lib/", "PrimeUI.lua")
   term.setTextColor(colors.blue)

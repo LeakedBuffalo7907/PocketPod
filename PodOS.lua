@@ -9,14 +9,14 @@ local speaker = peripheral.find("speaker")
 local GlobalSongsList = {}
 local speakerlib = require("/lib/speakerlib")
 local PrimeUI = require("/lib/PrimeUI")
-local webserver_URL = "https://pocketpod.leakedbuffalo79.repl.co"
+local webserver_URL = "https://pocketpod.leakedbuffalo79.repl.co/songs"
 
 if not speaker then -- Check if there is a speaker
   error("No Speaker Stinky",0)
 end
 
 local function getSongsList() 
-  local SongsFile, msg = http.get(webserver_URL .. "/songs")
+  local SongsFile, msg = http.get(webserver_URL)
   if not SongsFile then
     error(msg)
   end
@@ -30,15 +30,37 @@ local function getSongsList()
 
 end
 local function getSongInfo(song) 
-  return song.Name
+  return song.SongName
 
+end
+local function playSong(songName) 
+  local url = ""
+  for k,v in pairs(GlobalSongsList) do
+    if v.SongName == songName then 
+      url = "?Song=" .. v.FileHost
+    end
+  end
+  speakerlib.playDfpwmMono(webserver_URL .. "/files" .. url)
 end
 
 pod.run = function (arguments)
   getSongsList()
+  NameEntrys = {}
+  DescriptionEntry = {}
+  local w, h = term.getSize()
   for k,v in pairs(GlobalSongsList) do
-    print(k,getSongInfo(v))
+    table.insert(NameEntrys, v.SongName)
+    table.insert(DescriptionEntry, v.SongName .. " - " .. v.Artist)
   end
+PrimeUI.clear()
+local titlewidth = #("Pocket Pod") / 2
+PrimeUI.label(term.current(), w / 2 - titlewidth, 2, "Pocket Pod")
+PrimeUI.horizontalLine(term.current(), w / 2 - titlewidth - 2, 3, #("Pocket Pod") + 4)
+local redraw = PrimeUI.textBox(term.current(), 3, 15, 40, 3, DescriptionEntry[1])
+PrimeUI.borderBox(term.current(), 3, 6, w - 4, 8)
+PrimeUI.selectionBox(term.current(), 3, 6, w - 4, 8, NameEntrys, function(entry) playSong(entry) end, function(option) redraw(DescriptionEntry[option]) end)
+local _, _, selection = PrimeUI.run()
+
 end
 pod.play = function (arguments)
   speakerlib.playDfpwmMono(arguments[1])
