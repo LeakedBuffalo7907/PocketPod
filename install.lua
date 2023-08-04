@@ -27,6 +27,7 @@ end
     print("Installing now")
   end
   downloadFile("/", "CurrentVersion.txt")
+  downloadFile("/", "Config.txt")
   downloadFile("/", "PodOS.lua")
   downloadFile("/", "startup.lua")
   downloadFile("/lib/", "speakerlib.lua")

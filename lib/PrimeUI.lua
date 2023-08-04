@@ -586,7 +586,7 @@ end
 ---@param selectChangeAction function|string|nil A function or `run` event that's called when the current selection is changed
 ---@param fgColor color|nil The color of the text (defaults to white)
 ---@param bgColor color|nil The color of the background (defaults to black)
-function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectChangeAction, fgColor, bgColor)
+function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectChangeAction, fgColor, bgColor, selectColor)
     expect(1, win, "table")
     expect(2, x, "number")
     expect(3, y, "number")
@@ -597,6 +597,7 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
     expect(8, selectChangeAction, "function", "string", "nil")
     fgColor = expect(9, fgColor, "number", "nil") or colors.white
     bgColor = expect(10, bgColor, "number", "nil") or colors.black
+    selectColor = expect(11, selectColor, "number", "nil") or colors.blue
     -- Create container window.
     local entrywin = window.create(win, x, y, width - 1, height)
     local selection, scroll = 1, 1
@@ -614,8 +615,8 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
             -- Set the colors: invert if selected.
             entrywin.setCursorPos(2, i - scroll + 1)
             if i == selection then
-                entrywin.setBackgroundColor(fgColor)
-                entrywin.setTextColor(bgColor)
+                entrywin.setBackgroundColor(selectColor)
+                entrywin.setTextColor(fgColor)
             else
                 entrywin.setBackgroundColor(bgColor)
                 entrywin.setTextColor(fgColor)
