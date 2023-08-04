@@ -95,6 +95,9 @@ local function playSong(songName)
     local chunk = ""
     data = http.get(webserver_URL .. "/songs/files" .. url, nil, true)
     while chunk do
+      if not data or data == nil then
+        break
+      end
       chunk = data.read(0.5*1024)
         local buffer = decoder(chunk)
     
