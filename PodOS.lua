@@ -36,6 +36,7 @@ if fs.exists("/CurrentVersion.txt") then
         elseif events[2] == 28 then
         shell.run("wget run " .. baseRepoURL .. "/install.lua")
         end
+        print(events[2])
 
       end
 
