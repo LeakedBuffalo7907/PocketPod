@@ -27,6 +27,7 @@ end
   downloadFile("/", "CurrentVersion.txt")
   downloadFile("/", "PodOS.lua")
   downloadFile("/lib/", "speakerlib.lua")
+  downloadFile("/lib/", "PrimeUI.lua")
   term.setTextColor(colors.blue)
   print("Pocket Pod Installed " .. currentVersion)
   term.setTextColor(colors.white)
