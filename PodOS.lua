@@ -110,9 +110,9 @@ pod.weburl = function (arguments)
   else
     local ConfigRead = fs.open("/Config.txt", "r")
     term.setTextColor(colors.blue)
-    print(ConfigEdit.readAll())
+    print(ConfigRead.readAll())
     term.setTextColor(colors.white)
-    ConfigEdit.close()
+    ConfigRead.close()
   end
 end
 
