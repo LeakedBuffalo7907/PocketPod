@@ -3,16 +3,16 @@ if periphemu then -- probably on CraftOS-PC
     config.set("standardsMode",true)
 end
 
-local version = "1.0.0"
 local args = {...}
 local pod = {}
 local speaker = peripheral.find("speaker")
 local GlobalSongsList = {}
 local speakerlib = require("/lib/speakerlib")
+local PrimeUI = require("/lib/PrimeUI")
 local webserver_URL = "https://pocketpod.leakedbuffalo79.repl.co"
 
 if not speaker then -- Check if there is a speaker
-  error("No Speaker",0)
+  error("No Speaker Stinky",0)
 end
 
 local function getSongsList() 
@@ -23,15 +23,22 @@ local function getSongsList()
 
   GlobalSongsList = textutils.unserialiseJSON(SongsFile.readAll())
   SongsFile.close()
-  print(GlobalSongsList)
   
   if not GlobalSongsList then
-    error("json data malformed",0)
+    error("Json Format Error",0)
   end
 
 end
-pod.list = function (arguments)
+local function getSongInfo(song) 
+  print(song)
+
+end
+
+pod.run = function (arguments)
   getSongsList()
+  for k,v in pairs(GlobalSongsList) do
+    print(k,v)
+  end
 end
 pod.play = function (arguments)
   speakerlib.playDfpwmMono(arguments[1])
