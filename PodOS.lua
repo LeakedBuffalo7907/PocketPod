@@ -30,13 +30,12 @@ if fs.exists("/CurrentVersion.txt") then
     while not uptodate do
       local events = {os.pullEvent()}
       if events[1] == "key" then
-        if events[2] == 57 then
+        if events[2] == keys.space then
           uptodate = true
           break
-        elseif events[2] == 28 then
+        elseif events[2] == keys.enter then
         shell.run("wget run " .. baseRepoURL .. "/install.lua")
         end
-        print(events[2])
 
       end
 
