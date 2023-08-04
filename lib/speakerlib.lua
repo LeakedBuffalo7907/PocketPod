@@ -48,7 +48,7 @@ local function playDfpwmMono(path,volume)
 		buffer = decoder(chunk)
 		parallel.waitForAll(table.unpack(speakers))
 		if turtle then
-			turtle.turnLeft()
+			parallel.waitForAll(turtle.turnLeft())
 		end
 	end
 	data.close()
