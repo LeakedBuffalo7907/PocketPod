@@ -30,14 +30,14 @@ local function getSongsList()
 
 end
 local function getSongInfo(song) 
-  print(song)
+  return song.Name
 
 end
 
 pod.run = function (arguments)
   getSongsList()
   for k,v in pairs(GlobalSongsList) do
-    print(k,v)
+    print(k,getSongInfo(v))
   end
 end
 pod.play = function (arguments)
