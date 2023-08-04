@@ -67,15 +67,14 @@ local function getSongInfo(song)
 
 end
 local function playSong(songName) 
+  term.setCursorPos(1,1)
   local url = ""
   for k,v in pairs(GlobalSongsList) do
     if v.SongName == songName then 
       url = "?Song=" .. v.FileHost
     end
   end
-  PrimeUI.addTask(function()
-    speakerlib.playDfpwmMono(webserver_URL .. "/files" .. url)
-  end)
+    speakerlib.playDfpwmMono(webserver_URL .. "/songs/files" .. url)
 end
 local function DrawScreen() 
   PrimeUI.clear()

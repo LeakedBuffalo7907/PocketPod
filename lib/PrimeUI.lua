@@ -73,7 +73,7 @@ do
                     -- Resume the coroutine, passing the current event.
                     local res = table.pack(coroutine.resume(v.coro, table.unpack(ev, 1, ev.n)))
                     -- If the call failed, bail out. Coroutines should never exit.
-                    if not res[1] then error(res[2], 2) end
+                    if not res[1] then error(debug.traceback(v.coro, res[2]), 2) end
                     -- If the coroutine resolved, return its values.
                     if res[2] == coros then return table.unpack(res, 3, res.n) end
                     -- Set the next event filter.
