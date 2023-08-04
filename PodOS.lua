@@ -11,7 +11,7 @@ local ConfigFile = fs.open("/Config.txt", "r")
 local webserver_URL = ConfigFile.readAll()
 ConfigFile.close()
 local GlobalSongsList = {}
-local speakerlib = require("/lib/speakerlib")
+local dfpwm = require("cc.audio.dfpwm")
 local PrimeUI = require("/lib/PrimeUI")
 local LocalVersion = 0.00
 
@@ -74,7 +74,21 @@ local function playSong(songName)
       url = "?Song=" .. v.FileHost
     end
   end
-    speakerlib.playDfpwmMono(webserver_URL .. "/songs/files" .. url)
+  PrimeUI.addTask(function()
+    local decoder = dfpwm.make_decoder()
+    local chunk = ""
+    data = http.get(webserver_URL .. "/songs/files" .. url, nil, true)
+    while chunk do
+      chunk = data.read(0.5*1024)
+        local buffer = decoder(chunk)
+    
+        while not speaker.playAudio(buffer) do
+            os.pullEvent("speaker_audio_empty")
+        end
+    end
+  
+  end)
+    -- speakerlib.playDfpwmMono(webserver_URL .. "/songs/files" .. url)
 end
 local function DrawScreen() 
   PrimeUI.clear()

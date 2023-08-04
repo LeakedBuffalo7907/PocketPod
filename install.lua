@@ -1,6 +1,10 @@
 local baseRepoURL = "http://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
 
-
+local function checkFile(path, name) 
+  if not fs.exists(path .. name) then
+    downloadFile(path, name)
+  end
+end
 local function downloadFile(path, name)
   local status = "Downloaded"
   if fs.exists(path .. name) then
@@ -27,7 +31,7 @@ end
     print("Installing now")
   end
   downloadFile("/", "CurrentVersion.txt")
-  downloadFile("/", "Config.txt")
+  checkFile("/", "Config.txt")
   downloadFile("/", "PodOS.lua")
   downloadFile("/", "startup.lua")
   downloadFile("/lib/", "speakerlib.lua")
