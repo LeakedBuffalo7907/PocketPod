@@ -40,27 +40,30 @@ local function playSong(songName)
       url = "?Song=" .. v.FileHost
     end
   end
-  speakerlib.playDfpwmMono(webserver_URL .. "/files" .. url)
+  PrimeUI.addTask(function()
+    speakerlib.playDfpwmMono(webserver_URL .. "/files" .. url)
+  end)
 end
-
+local function DrawScreen() 
+  PrimeUI.clear()
+  local titlewidth = #("Pocket Pod") / 2
+  local w, h = term.getSize()
+  PrimeUI.label(term.current(), w / 2 - titlewidth, 2, "Pocket Pod")
+  PrimeUI.horizontalLine(term.current(), w / 2 - titlewidth - 2, 3, #("Pocket Pod") + 4)
+  local redraw = PrimeUI.textBox(term.current(), 3, 15, 40, 3, DescriptionEntry[1])
+  PrimeUI.borderBox(term.current(), 3, 6, w - 4, 8)
+  PrimeUI.selectionBox(term.current(), 3, 6, w - 4, 8, NameEntrys, function(entry) playSong(entry) end, function(option) redraw(DescriptionEntry[option]) end)
+  PrimeUI.run()
+end
 pod.run = function (arguments)
   getSongsList()
   NameEntrys = {}
   DescriptionEntry = {}
-  local w, h = term.getSize()
   for k,v in pairs(GlobalSongsList) do
     table.insert(NameEntrys, v.SongName)
     table.insert(DescriptionEntry, v.SongName .. " - " .. v.Artist)
   end
-PrimeUI.clear()
-local titlewidth = #("Pocket Pod") / 2
-PrimeUI.label(term.current(), w / 2 - titlewidth, 2, "Pocket Pod")
-PrimeUI.horizontalLine(term.current(), w / 2 - titlewidth - 2, 3, #("Pocket Pod") + 4)
-local redraw = PrimeUI.textBox(term.current(), 3, 15, 40, 3, DescriptionEntry[1])
-PrimeUI.borderBox(term.current(), 3, 6, w - 4, 8)
-PrimeUI.selectionBox(term.current(), 3, 6, w - 4, 8, NameEntrys, function(entry) playSong(entry) end, function(option) redraw(DescriptionEntry[option]) end)
-local _, _, selection = PrimeUI.run()
-
+  DrawScreen()
 end
 pod.play = function (arguments)
   speakerlib.playDfpwmMono(arguments[1])
