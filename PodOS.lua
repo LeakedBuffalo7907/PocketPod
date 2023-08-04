@@ -15,6 +15,24 @@ local dfpwm = require("cc.audio.dfpwm")
 local PrimeUI = require("/lib/PrimeUI")
 local LocalVersion = 0.00
 
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
+
+local A1, A2 = 727595, 798405  -- 5^17=D20*A1+A2
+local D20, D40 = 1048576, 1099511627776  -- 2^20, 2^40
+local X1, X2 = 0, 1
+function rand()
+    local U = X2*A2
+    local V = (X1*A2 + X2*A1) % D20
+    V = (V*D20 + U) % D40
+    X1 = math.floor(V/D20)
+    X2 = V - X1*D20
+    return V/D40
+end
+
 if fs.exists("/CurrentVersion.txt") then
   local webversion = http.get(baseRepoURL .. "/CurrentVersion.txt")
   local currentVersion = webversion.readAll()
@@ -62,10 +80,7 @@ local function getSongsList()
   end
 
 end
-local function getSongInfo(song) 
-  return song.SongName
-
-end
+local playingmusic = false
 local function playSong(songName) 
   term.setCursorPos(1,1)
   local url = ""
@@ -75,6 +90,7 @@ local function playSong(songName)
     end
   end
   PrimeUI.addTask(function()
+    playingmusic = true
     local decoder = dfpwm.make_decoder()
     local chunk = ""
     data = http.get(webserver_URL .. "/songs/files" .. url, nil, true)
@@ -84,15 +100,24 @@ local function playSong(songName)
     
         while not speaker.playAudio(buffer) do
             os.pullEvent("speaker_audio_empty")
+            playingmusic = false
         end
     end
   
   end)
     -- speakerlib.playDfpwmMono(webserver_URL .. "/songs/files" .. url)
 end
+local mixmusic = false
+local function playMix()
+  if mixmusic and not playingmusic then
+    math.randomseed(os.time())
+    local Random = math.floor(rand()*tablelength(GlobalSongsList)) + 1
+    playSong(GlobalSongsList[Random].SongName)
+  end
+end
 local function DrawScreen() 
   PrimeUI.clear()
-  local titlewidth = #("Pocket Pod " .. LocalVersion) / 2
+  local titlewidth = #("Pocket Pod " .. LocalVersion) / 2 + 2
   local w, h = term.getSize()
   PrimeUI.label(term.current(), w / 2 - titlewidth, 2, "Pocket Pod " .. LocalVersion, colors.cyan)
   PrimeUI.horizontalLine(term.current(), w / 2 - titlewidth - 2, 3, #("Pocket Pod " .. LocalVersion) + 4, colors.blue)
@@ -100,6 +125,10 @@ local function DrawScreen()
   PrimeUI.borderBox(term.current(), 3, 6, w - 4, 8)
   PrimeUI.selectionBox(term.current(), 3, 6, w - 4, 8, NameEntrys, function(entry) playSong(entry) end, function(option) redraw(DescriptionEntry[option]) end, colors.white,colors.black,colors.blue)
   PrimeUI.button(term.current(), 3, h , "Exit", function() term.setBackgroundColor(colors.black) term.setTextColor(colors.white) term.clear() term.setCursorPos(1,1) print("Thank you for using Pocket Pod") error("", -1) end)
+  PrimeUI.label(term.current(), w - 7, h, "[", colors.gray)
+  PrimeUI.label(term.current(), w - 5, h, "] Mix", colors.gray)
+  PrimeUI.keyAction(keys.m, function() if mixmusic then PrimeUI.label(term.current(), w - 6, h, "M", colors.lime) playMix() elseif not mixmusic then PrimeUI.label(term.current(), w - 6, h, "M", colors.white) end mixmusic = not mixmusic end)
+  PrimeUI.label(term.current(), w - 6, h, "M", colors.white)
   PrimeUI.run()
 end
 pod.run = function (arguments)
@@ -108,12 +137,23 @@ pod.run = function (arguments)
   DescriptionEntry = {}
   for k,v in pairs(GlobalSongsList) do
     table.insert(NameEntrys, v.SongName)
-    table.insert(DescriptionEntry, v.SongName .. " - " .. v.Artist)
+    table.insert(DescriptionEntry,"Song: " .. v.SongName .. " \nArtist: " .. v.Artist)
   end
   DrawScreen()
 end
 pod.play = function (arguments)
-  speakerlib.playDfpwmMono(arguments[1])
+  local decoder = dfpwm.make_decoder()
+  local chunk = ""
+  data = http.get(arguments[1], nil, true)
+  while chunk do
+    chunk = data.read(0.5*1024)
+      local buffer = decoder(chunk)
+  
+      while not speaker.playAudio(buffer) do
+          os.pullEvent("speaker_audio_empty")
+      end
+  end
+  
 end
 pod.weburl = function (arguments)
   if arguments[1] then
