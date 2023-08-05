@@ -5,6 +5,14 @@ end
 
 local args = {...}
 local pod = {}
+local DrawScreen
+local DrawSettings
+
+local NameEntrys = {}
+local DescriptionEntry = {}
+local WebURLsArray = {}
+local SettingsEntrys = {"Return","Change Music Server","Change Theme"}
+
 local speaker = peripheral.find("speaker")
 local baseRepoURL = "http://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
 local ConfigFile = fs.open("/Config.txt", "r")
@@ -89,21 +97,23 @@ local function playSong(songName)
       url = "?Song=" .. v.FileHost
     end
   end
+  playingmusic = true
+  local decoder = dfpwm.make_decoder()
+  local chunk = ""
+  data = http.get(webserver_URL .. "/songs/files" .. url, nil, true)
+  if not data or data == nil then
+    speaker.stop(); return;
+  end
   PrimeUI.addTask(function()
-    playingmusic = true
-    local decoder = dfpwm.make_decoder()
-    local chunk = ""
-    data = http.get(webserver_URL .. "/songs/files" .. url, nil, true)
     while chunk do
-      if not data or data == nil then
-        break
-      end
       chunk = data.read(0.5*1024)
         local buffer = decoder(chunk)
-    
+        if not playingmusic then
+          speaker.stop()
+          while true do os.pullEvent() end
+        end
         while not speaker.playAudio(buffer) do
-            os.pullEvent("speaker_audio_empty")
-            playingmusic = false
+          os.pullEvent("speaker_audio_empty")
         end
     end
   
@@ -111,6 +121,7 @@ local function playSong(songName)
     -- speakerlib.playDfpwmMono(webserver_URL .. "/songs/files" .. url)
 end
 local mixmusic = false
+local showsettings = false
 local function playMix()
   if mixmusic and not playingmusic then
     math.randomseed(os.time())
@@ -118,7 +129,44 @@ local function playMix()
     playSong(GlobalSongsList[Random].SongName)
   end
 end
-local function DrawScreen() 
+local Settings = {}
+Settings.Themes = function() 
+
+end
+Settings.WebURL = function()
+  PrimeUI.clear()
+  PrimeUI.label(term.current(), 3, 5, "Add Streaming Server")
+  PrimeUI.borderBox(term.current(), 4, 7, 40, 1)
+  PrimeUI.inputBox(term.current(), 4, 7, 40, function(textoutput) table.insert(WebURLsArray, textoutput) end)
+  for k,v in pairs(WebURLsArray) do
+    PrimeUI.label(term.current(), 2, 9, v)
+  end
+  PrimeUI.run()
+
+end
+local function processSetting(entry) 
+  if entry == SettingsEntrys[1] then
+    DrawScreen()
+  elseif entry == SettingsEntrys[2] then
+    Settings.WebURL()
+  elseif entry == SettingsEntrys[3] then
+    Settings.Themes()
+  end
+end
+DrawSettings = function()
+
+  PrimeUI.clear()
+  local titlewidth = #("Pocket Settings " .. LocalVersion) / 2 + 2
+  local w, h = term.getSize()
+  PrimeUI.label(term.current(), w / 2 - titlewidth, 2, "Pocket Settings " .. LocalVersion, colors.cyan)
+  PrimeUI.horizontalLine(term.current(), w / 2 - titlewidth - 2, 3, #("Pocket Settings " .. LocalVersion) + 4, colors.blue)
+  PrimeUI.borderBox(term.current(), 3, 6, w - 4, 8)
+  PrimeUI.selectionBox(term.current(), 3, 6, w - 4, 8, SettingsEntrys, function(entry) processSetting(entry)  end, function(option)  end, colors.white,colors.black,colors.blue)
+
+
+
+end
+DrawScreen = function()
   PrimeUI.clear()
   local titlewidth = #("Pocket Pod " .. LocalVersion) / 2 + 2
   local w, h = term.getSize()
@@ -128,16 +176,29 @@ local function DrawScreen()
   PrimeUI.borderBox(term.current(), 3, 6, w - 4, 8)
   PrimeUI.selectionBox(term.current(), 3, 6, w - 4, 8, NameEntrys, function(entry) playSong(entry) end, function(option) redraw(DescriptionEntry[option]) end, colors.white,colors.black,colors.blue)
   PrimeUI.button(term.current(), 3, h , "Exit", function() term.setBackgroundColor(colors.black) term.setTextColor(colors.white) term.clear() term.setCursorPos(1,1) print("Thank you for using Pocket Pod") error("", -1) end)
-  PrimeUI.label(term.current(), w - 7, h, "[", colors.gray)
-  PrimeUI.label(term.current(), w - 5, h, "] Mix", colors.gray)
-  PrimeUI.keyAction(keys.m, function() if mixmusic then PrimeUI.label(term.current(), w - 6, h, "M", colors.lime) playMix() elseif not mixmusic then PrimeUI.label(term.current(), w - 6, h, "M", colors.white) end mixmusic = not mixmusic end)
-  PrimeUI.label(term.current(), w - 6, h, "M", colors.white)
+  PrimeUI.label(term.current(), w - 11, h, "[", colors.gray)
+  PrimeUI.label(term.current(), w - 9, h, "] Mix", colors.gray)
+  PrimeUI.keyAction(keys.m, function() if mixmusic then PrimeUI.label(term.current(), w - 10, h, "M", colors.lime) playMix() elseif not mixmusic then PrimeUI.label(term.current(), w - 10, h, "M", colors.white) playingmusic = false end mixmusic = not mixmusic end)
+  PrimeUI.label(term.current(), w - 10, h, "M", colors.white)
+
+  PrimeUI.label(term.current(), w - 11, h - 1, "[", colors.gray)
+  PrimeUI.label(term.current(), w - 9, h - 1, "] Settings", colors.gray)
+  PrimeUI.keyAction(keys.s, function() 
+  if showsettings then  
+    PrimeUI.label(term.current(), w - 10, h - 1, "S", colors.lime)
+    DrawSettings()
+  elseif not showsettings then
+    PrimeUI.label(term.current(), w - 10, h - 1, "S", colors.white)
+  end
+  showsettings = not showsettings 
+  end)
+  PrimeUI.label(term.current(), w - 10, h - 1, "S", colors.white)
   PrimeUI.run()
 end
 pod.run = function (arguments)
   getSongsList()
-  NameEntrys = {}
-  DescriptionEntry = {}
+  --WebURLsArray
+  
   for k,v in pairs(GlobalSongsList) do
     table.insert(NameEntrys, v.SongName)
     table.insert(DescriptionEntry,"Song: " .. v.SongName .. " \nArtist: " .. v.Artist)

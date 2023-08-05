@@ -155,7 +155,7 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor)
         local buttonDown = false
         while true do
             local event, button, clickX, clickY = os.pullEvent()
-            if event == "mouse_click" and button == 1 and clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
+            if event == "mouse_click" and button == 1 and clickX >= screenX and clickX < screenX + #text + 2 and (clickY == screenY or clickY == screenY + 0.75 or clickY == screenY - 0.75) then
                 -- Initiate a click action (but don't trigger until mouse up).
                 buttonDown = true
                 -- Redraw the button with the clicked background color.

@@ -1,10 +1,5 @@
 local baseRepoURL = "http://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
 
-local function checkFile(path, name) 
-  if not fs.exists(path .. name) then
-    downloadFile(path, name)
-  end
-end
 local function downloadFile(path, name)
   local status = "Downloaded"
   if fs.exists(path .. name) then
@@ -17,6 +12,12 @@ local function downloadFile(path, name)
   term.setTextColor(colors.lime)
   print(name .. " " .. status)
   term.setTextColor(colors.white)
+end
+
+local function checkFile(path, name) 
+  if not fs.exists(path .. name) then
+    downloadFile(path, name)
+  end
 end
 
   local uptodate = false
