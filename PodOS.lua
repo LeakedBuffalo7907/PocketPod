@@ -50,8 +50,10 @@ if fs.exists("/CurrentVersion.txt") then
   F.close()
   if currentVersion > LocalVersion then
     term.setTextColor(colors.red)
-    print("Pocket Pod is out of date! Do you want to update?")
-    print("Space to cancel - Enter to update")
+    print("Pocket Pod is out of date!")
+    print("Do you want to update?")
+    print("Space to cancel") 
+    print("Enter to update")
     local uptodate = false
     while not uptodate do
       local events = {os.pullEvent()}
@@ -87,6 +89,12 @@ local function getSongsList()
     error("Json Format Error",0)
   end
 
+  for k,v in pairs(GlobalSongsList) do
+    table.insert(NameEntrys, v.SongName)
+    table.insert(DescriptionEntry,"Song: " .. v.SongName .. " \nArtist: " .. v.Artist)
+  end
+  
+
 end
 local playingmusic = false
 local function playSong(songName) 
@@ -107,6 +115,11 @@ local function playSong(songName)
   PrimeUI.addTask(function()
     while chunk do
       chunk = data.read(0.5*1024)
+      if not data or not chunk then
+        while true do 
+        os.pullEvent()
+        end
+      end
         local buffer = decoder(chunk)
         if not playingmusic then
           speaker.stop()
@@ -168,7 +181,7 @@ DrawSettings = function()
 end
 DrawScreen = function()
   PrimeUI.clear()
-  local titlewidth = #("Pocket Pod " .. LocalVersion) / 2 + 2
+  local titlewidth = #("Pocket Pod " .. LocalVersion) / 2
   local w, h = term.getSize()
   PrimeUI.label(term.current(), w / 2 - titlewidth, 2, "Pocket Pod " .. LocalVersion, colors.cyan)
   PrimeUI.horizontalLine(term.current(), w / 2 - titlewidth - 2, 3, #("Pocket Pod " .. LocalVersion) + 4, colors.blue)
@@ -197,12 +210,6 @@ DrawScreen = function()
 end
 pod.run = function (arguments)
   getSongsList()
-  --WebURLsArray
-  
-  for k,v in pairs(GlobalSongsList) do
-    table.insert(NameEntrys, v.SongName)
-    table.insert(DescriptionEntry,"Song: " .. v.SongName .. " \nArtist: " .. v.Artist)
-  end
   DrawScreen()
 end
 pod.play = function (arguments)
