@@ -113,15 +113,19 @@ local function playSong(songName)
     speaker.stop(); return;
   end
   PrimeUI.addTask(function()
+    while true do
+      if turtle then
+turtle.turnLeft()
+      end
+    end
+  end)
+  PrimeUI.addTask(function()
     while chunk do
       chunk = data.read(0.5*1024)
       if not data or not chunk then
         while true do 
         os.pullEvent()
         end
-      end
-      if turtle then
-turtle.turnLeft()
       end
         local buffer = decoder(chunk)
         if not playingmusic then
