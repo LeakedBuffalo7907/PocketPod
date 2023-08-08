@@ -121,7 +121,7 @@ local function playSong(songName)
         end
       end
       if turtle then
-turtle.TurnLeft()
+turtle.turnLeft()
       end
         local buffer = decoder(chunk)
         if not playingmusic then
