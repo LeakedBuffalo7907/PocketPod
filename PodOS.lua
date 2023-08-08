@@ -120,6 +120,9 @@ local function playSong(songName)
         os.pullEvent()
         end
       end
+      if turtle then
+turtle.TurnLeft()
+      end
         local buffer = decoder(chunk)
         if not playingmusic then
           speaker.stop()
