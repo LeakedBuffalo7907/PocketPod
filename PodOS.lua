@@ -116,6 +116,8 @@ local function playSong(songName)
     while true do
       if turtle then
 turtle.turnLeft()
+      else
+        os.pullEvent()
       end
     end
   end)
