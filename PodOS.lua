@@ -112,15 +112,14 @@ local function playSong(songName)
   if not data or data == nil then
     speaker.stop(); return;
   end
-  PrimeUI.addTask(function()
-    while true do
-      if turtle then
-turtle.turnLeft()
-      else
-        os.pullEvent()
+  if turtle then
+    PrimeUI.addTask(function()
+      while true do
+        turtle.turnLeft()
+        sleep(0.01)
       end
-    end
-  end)
+    end)
+  end
   PrimeUI.addTask(function()
     while chunk do
       chunk = data.read(0.5*1024)
