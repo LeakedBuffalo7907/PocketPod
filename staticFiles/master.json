@@ -8,5 +8,40 @@
     "SongName":"Coems",
     "Artist":"Meme",
     "FileHost":"coems.wav"
+},
+{
+    "SongName":"Angry Grandpa Rage",
+    "Artist":"Angry Grandpa",
+    "FileHost":"angrygrandpa.wav"
+},
+{
+    "SongName":"Blinding Lights",
+    "Artist":"The Weekend",
+    "FileHost":"blindinglights.wav"
+},
+{
+    "SongName":"Cave Wave",
+    "Artist":"Gorilla Tag",
+    "FileHost":"cavewave.wav"
+},
+{
+    "SongName":"Ramen",
+    "Artist":"Pink Guy",
+    "FileHost":"ramen.wav"
+},
+{
+    "SongName":"Rick Roll",
+    "Artist":"Rick Astley",
+    "FileHost":"rickroll.wav"
+},
+{
+    "SongName":"Rule The World",
+    "Artist":"Tears For Fear",
+    "FileHost":"ruletheworld.wav"
+},
+{
+    "SongName":"STFU",
+    "Artist":"Pink Guy",
+    "FileHost":"stfu.wav"
 }
 ]
