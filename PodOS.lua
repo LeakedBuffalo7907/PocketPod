@@ -99,8 +99,7 @@ local function playSong(songName)
 
   local url = ""
   local chunk = ""
-  local data = ""
-
+  local decoder = dfpwm.make_decoder()
 
   for k,v in pairs(GlobalSongsList) do
     if v.SongName == songName then 
@@ -112,7 +111,8 @@ local function playSong(songName)
   
   data = http.get(webserver_URL .. "/songs/" .. url, nil, true)
   if not data or data == nil then
-    speaker.stop(); return;
+    speaker.stop();
+    return;
   end
 
   if turtle then
@@ -122,26 +122,26 @@ local function playSong(songName)
         sleep(0.01)
       end
     end)
-    
-    PrimeUI.addTask(function()
-      while chunk do
-        chunk = data.read(0.5*1024)
-        if not data or not chunk then
-          while true do 
-            os.pullEvent()
-          end
-        end
-          if not playingmusic then
-            speaker.stop()
-            while true do os.pullEvent() end
-          end
-          while not speaker.playAudio({("b"):rep(#chunk):unpack(chunk)}) do
-            os.pullEvent("speaker_audio_empty")
-          end
-      end
-    
-    end)
   end
+    
+  PrimeUI.addTask(function()
+    while chunk do
+      chunk = data.read(0.5*1024)
+      if not data or not chunk then
+        while true do 
+          os.pullEvent()
+        end
+      end
+      local buffer = decoder(chunk)
+      if not playingmusic then
+        speaker.stop()
+        while true do os.pullEvent() end
+      end
+      while not speaker.playAudio(buffer) do
+        os.pullEvent("speaker_audio_empty")
+      end
+    end
+  end)
 end
 local mixmusic = false
 local showsettings = false
@@ -186,7 +186,7 @@ DrawScreen = function()
   PrimeUI.selectionBox(term.current(), 3, 6, w - 4, 8, DescriptionEntry, function(entry) playSong(entry) end, function(option) redraw(DescriptionEntry[option]) end, colors.white,colors.black,colors.blue)
   PrimeUI.button(term.current(), 3, h , "Exit", function() term.setBackgroundColor(colors.black) term.setTextColor(colors.white) term.clear() term.setCursorPos(1,1) print("Thank you for using Pocket Pod") error("", -1) end)
   PrimeUI.label(term.current(), w - 11, h, "[ ] Mix", colors.gray)
-  PrimeUI.keyAction(keys.m, function() if mixmusic then PrimeUI.label(term.current(), w - 10, h, "M", colors.lime) playMix() elseif not mixmusic then PrimeUI.label(term.current(), w - 10, h, "M", colors.white) playingmusic = false end mixmusic = not mixmusic end)
+  PrimeUI.keyAction(keys.m, function() mixmusic = not mixmusic if mixmusic then PrimeUI.label(term.current(), w - 10, h, "M", colors.lime) playMix() elseif not mixmusic then PrimeUI.label(term.current(), w - 10, h, "M", colors.white) playingmusic = false end end)
   PrimeUI.label(term.current(), w - 10, h, "M", colors.white)
 
   PrimeUI.label(term.current(), w - 11, h - 1, "[ ] Settings", colors.gray)
