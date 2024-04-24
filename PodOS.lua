@@ -9,11 +9,9 @@ local DrawScreen
 local DrawSettings
 local DrawNewAudio
 
-local NameEntrys = {"Add YouTube Audio"}
 local DescriptionEntry = {}
 local WebURLsArray = {}
 local SettingsEntrys = {"Return"}
-local SongCreation = {"Return"}
 
 local speaker = peripheral.find("speaker")
 local baseRepoURL = "http://raw.githubusercontent.com/LeakedBuffalo7907/PocketPod/main"
@@ -90,7 +88,6 @@ local function getSongsList()
   end
 
   for k,v in pairs(GlobalSongsList) do
-    table.insert(NameEntrys, v.SongName)
     table.insert(DescriptionEntry,"Song: " .. v.SongName)
   end
   
@@ -99,29 +96,32 @@ end
 local playingmusic = false
 local function playSong(songName) 
   term.setCursorPos(1,1)
-  if (songName == "Add YouTube Audio") then
-    DrawNewAudio();
-  else
-    local url = ""
-    for k,v in pairs(GlobalSongsList) do
-      if v.SongName == songName then 
-        url = "?Song=" .. v.FileHost
+
+  local url = ""
+  local chunk = ""
+
+  
+  for k,v in pairs(GlobalSongsList) do
+    if v.SongName == songName then 
+      url = v.FileHost
+    end
+  end
+
+  playingmusic = true
+  
+  data = http.get(webserver_URL .. "/songs/" .. url, nil, true)
+  if not data or data == nil then
+    speaker.stop(); return;
+  end
+
+  if turtle then
+    PrimeUI.addTask(function()
+      while true do
+        turtle.turnLeft()
+        sleep(0.01)
       end
-    end
-    playingmusic = true
-    local chunk = ""
-    data = http.get(webserver_URL .. "/songs/" .. url, nil, true)
-    if not data or data == nil then
-      speaker.stop(); return;
-    end
-    if turtle then
-      PrimeUI.addTask(function()
-        while true do
-          turtle.turnLeft()
-          sleep(0.01)
-        end
-      end)
-    end
+    end)
+    
     PrimeUI.addTask(function()
       while chunk do
         chunk = data.read(0.5*1024)
@@ -159,15 +159,7 @@ local function processSetting(entry)
     DrawScreen()
   end
 end
-local function ClearNewSong()
 
-end
-local function processSongEntry(entry) 
-  if entry == SongCreation[1] then
-    ClearNewSong()
-    DrawScreen()
-  end
-end
 DrawSettings = function()
 
   PrimeUI.clear()
@@ -181,19 +173,7 @@ DrawSettings = function()
 
 
 end
-DrawNewAudio = function()
 
-  PrimeUI.clear()
-  local titlewidth = #("New Song") / 2
-  local w, h = term.getSize()
-  PrimeUI.label(term.current(), w / 2 - titlewidth, 2, "New Song", colors.cyan)
-  PrimeUI.horizontalLine(term.current(), w / 2 - titlewidth - 2, 3, #("New Song") + 4, colors.blue)
-  PrimeUI.borderBox(term.current(), 3, 6, w - 4, 8)
-  PrimeUI.selectionBox(term.current(), 3, 6, w - 4, 8, SongCreation, function(entry) processSongEntry(entry) end, function(option)  end, colors.white,colors.black,colors.blue)
-
-
-
-end
 DrawScreen = function()
   PrimeUI.clear()
   local titlewidth = #("Pocket Pod " .. LocalVersion) / 2
@@ -202,7 +182,7 @@ DrawScreen = function()
   PrimeUI.horizontalLine(term.current(), w / 2 - titlewidth - 2, 3, #("Pocket Pod " .. LocalVersion) + 4, colors.blue)
   local redraw = PrimeUI.textBox(term.current(), 3, 15, 40, 3, "")
   PrimeUI.borderBox(term.current(), 3, 6, w - 4, 8)
-  PrimeUI.selectionBox(term.current(), 3, 6, w - 4, 8, NameEntrys, function(entry) playSong(entry) end, function(option) redraw(DescriptionEntry[option]) end, colors.white,colors.black,colors.blue)
+  PrimeUI.selectionBox(term.current(), 3, 6, w - 4, 8, DescriptionEntry, function(entry) playSong(entry) end, function(option) redraw(DescriptionEntry[option]) end, colors.white,colors.black,colors.blue)
   PrimeUI.button(term.current(), 3, h , "Exit", function() term.setBackgroundColor(colors.black) term.setTextColor(colors.white) term.clear() term.setCursorPos(1,1) print("Thank you for using Pocket Pod") error("", -1) end)
   PrimeUI.label(term.current(), w - 11, h, "[ ] Mix", colors.gray)
   PrimeUI.keyAction(keys.m, function() if mixmusic then PrimeUI.label(term.current(), w - 10, h, "M", colors.lime) playMix() elseif not mixmusic then PrimeUI.label(term.current(), w - 10, h, "M", colors.white) playingmusic = false end mixmusic = not mixmusic end)
