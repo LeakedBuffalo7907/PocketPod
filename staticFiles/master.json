@@ -1,7 +1,12 @@
 [
-    {
-      "SongName":"Gyat",
-      "Artist":"Rizzler",
-      "FileHost":"gyat.dfpwm"
-    }
-  ]
+{
+    "SongName":"Gyat",
+    "Artist":"Rizzler",
+    "FileHost":"gyat.dfpwm"
+},
+{
+    "SongName":"Coems",
+    "Artist":"Meme",
+    "FileHost":"coems.wav"
+}
+]

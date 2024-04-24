@@ -88,7 +88,7 @@ local function getSongsList()
   end
 
   for k,v in pairs(GlobalSongsList) do
-    table.insert(DescriptionEntry,"Song: " .. v.SongName)
+    table.insert(DescriptionEntry, v.SongName)
   end
   
 
@@ -99,8 +99,9 @@ local function playSong(songName)
 
   local url = ""
   local chunk = ""
+  local data = ""
 
-  
+
   for k,v in pairs(GlobalSongsList) do
     if v.SongName == songName then 
       url = v.FileHost
